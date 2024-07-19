@@ -34,11 +34,11 @@ services:
     networks:
       - frontend-backend-network
 
-  nginx-frontend:
+  frontend-proxy:
     platform: linux/amd64
     image: nginx:alpine
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - type: bind
         source: ./services/nginx/nginx.frontend.dev.conf
@@ -48,11 +48,11 @@ services:
     networks:
       - frontend-backend-network
 
-  nginx-backend:
+  backend-proxy:
     platform: linux/amd64
     image: nginx:alpine
     ports:
-      - "8081:80"
+      - "8080:80"
     volumes:
       - type: bind
         source: ./services/nginx/nginx.backend.dev.conf

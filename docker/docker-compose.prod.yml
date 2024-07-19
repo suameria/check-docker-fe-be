@@ -22,7 +22,7 @@ services:
     networks:
       - frontend-backend-network
 
-  nginx-frontend:
+  frontend-proxy:
     platform: linux/amd64
     image: nginx:alpine
     ports:
@@ -36,7 +36,7 @@ services:
     networks:
       - frontend-backend-network
 
-  nginx-backend:
+  backend-proxy:
     platform: linux/amd64
     image: nginx:alpine
     ports:

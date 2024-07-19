@@ -33,22 +33,22 @@ teardown: ## Tear down the project (containers, networks, volumes)
 # フロントエンドのセットアップと開始
 frontend-up: ## Set up and start the frontend
 	@echo "Setting up and starting the frontend..."
-	cd docker && docker compose up -d frontend nginx-frontend
+	cd docker && docker compose up -d frontend frontend-proxy
 
 # フロントエンドの停止
 frontend-down: ## Stop and tear down the frontend
 	@echo "Stopping and tearing down the frontend..."
-	cd docker && docker compose down frontend nginx-frontend
+	cd docker && docker compose down frontend frontend-proxy
 
 # バックエンドのセットアップと開始
 backend-up: ## Set up and start the backend
 	@echo "Setting up and starting the backend..."
-	cd docker && docker compose up -d backend nginx-backend
+	cd docker && docker compose up -d backend backend-proxy
 
 # バックエンドの停止
 backend-down: ## Stop and tear down the backend
 	@echo "Stopping and tearing down the backend..."
-	cd docker && docker compose down backend nginx-backend
+	cd docker && docker compose down backend backend-proxy
 
 
 # ============================
