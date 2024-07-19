@@ -9,7 +9,6 @@ services:
       - type: bind
         source: ../frontend
         target: /app
-    command: "npm run dev"
     environment:
       - NODE_ENV=development
     ports:
