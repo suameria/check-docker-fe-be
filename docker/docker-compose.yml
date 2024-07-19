@@ -1,0 +1,56 @@
+# This is for the local development environment
+services:
+  frontend:
+    build:
+      context: ./services/frontend
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ../frontend
+        target: /app
+    environment:
+      - NODE_ENV=development
+    networks:
+      - frontend-backend-network
+
+  backend:
+    build:
+      context: ./services/backend
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ../backend
+        target: /var/www
+    environment:
+      - APP_ENV=development
+    networks:
+      - frontend-backend-network
+
+  nginx-frontend:
+    image: nginx:alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - type: bind
+        source: ./services/nginx/nginx.frontend.dev.conf
+        target: /etc/nginx/nginx.conf
+    depends_on:
+      - frontend
+    networks:
+      - frontend-backend-network
+
+  nginx-backend:
+    image: nginx:alpine
+    ports:
+      - "8000:80"
+    volumes:
+      - type: bind
+        source: ./services/nginx/nginx.backend.dev.conf
+        target: /etc/nginx/nginx.conf
+    depends_on:
+      - backend
+    networks:
+      - frontend-backend-network
+
+networks:
+  frontend-backend-network:

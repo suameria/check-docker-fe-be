@@ -1,0 +1,56 @@
+# This is for the production environment
+services:
+  frontend:
+    build:
+      context: ./services/frontend
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ../frontend
+        target: /app
+    environment:
+      - NODE_ENV=production
+    networks:
+      - frontend-backend-network
+
+  backend:
+    build:
+      context: ./services/backend
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ../backend
+        target: /var/www
+    environment:
+      - APP_ENV=production
+    networks:
+      - frontend-backend-network
+
+  nginx-frontend:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - type: bind
+        source: ./services/nginx/nginx.frontend.prod.conf
+        target: /etc/nginx/nginx.conf
+    depends_on:
+      - frontend
+    networks:
+      - frontend-backend-network
+
+  nginx-backend:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - type: bind
+        source: ./services/nginx/nginx.backend.prod.conf
+        target: /etc/nginx/nginx.conf
+    depends_on:
+      - backend
+    networks:
+      - frontend-backend-network
+
+networks:
+  frontend-backend-network:
