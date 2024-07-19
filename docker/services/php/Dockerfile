@@ -1,6 +1,20 @@
-FROM php:8.0-fpm
+FROM php:8.3-fpm
 
-# Composerのインストール
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN apt update
+
+RUN apt install -y git zip unzip
+
+# PHPの標準の拡張モジュールのインストール(有効化も含む)
+RUN docker-php-ext-install \
+  bcmath \
+  opcache \
+  pdo_mysql
+
+# PHP Extension Community Library インストールし有効化
+RUN pecl install apcu && \
+  docker-php-ext-enable apcu
+
+# Composer インストール
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www

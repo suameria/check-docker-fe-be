@@ -7,47 +7,50 @@ help: ## コマンドヘルプの表示
 # Common
 # ==============================
 
+build: ## ビルドとアップ
+	@cd docker && docker compose up -d --build
+
 ps: ## コンテナの状態を表示
-	@docker container ps
+	@cd docker && docker container ps
 
 logs: ## ログを表示
-	@docker compose logs
+	@cd docker && docker compose logs
 
 front: ## フロントエンドコンテナに入る
-	@docker compose exec frontend /bin/sh
+	@cd docker && docker compose exec frontend /bin/sh
 
 back: ## バックエンドコンテナに入る
-	@docker compose exec backend /bin/bash
+	@cd docker && docker compose exec backend /bin/bash
 
 # ==============================
 # Local Development Environment
 # ==============================
 
 setup: ## 環境設定のセットアップ
-	@cp -n .env.example .env || echo ".env already exists"
+	@cd docker && cp -n .env.example .env || true
 
 up: setup frontend-up backend-up ## プロジェクトのセットアップと開始
 
 down: ## プロジェクトの停止
-	@docker compose down
+	@cd docker && docker compose down
 
 frontend-up: ## フロントエンドのセットアップと開始
-	@docker compose up -d frontend frontend-proxy
+	@cd docker && docker compose up -d frontend frontend-proxy
 
 backend-up: ## バックエンドのセットアップと開始
-	@docker compose up -d backend backend-proxy
+	@cd docker && docker compose up -d backend backend-proxy
 
 # ============================
 # Production Environment
 # ============================
 
 prod-setup: ## 本番環境用のセットアップ
-	@cp -n .env.production.example .env.production || echo ".env.production already exists"
+	@cd docker && cp -n .env.production.example .env.production || echo ".env.production already exists"
 	@cd ../frontend && npm ci --production
 	@cd ../backend && composer install --no-dev --optimize-autoloader
 
 prod-up: prod-setup ## 本番環境用のプロジェクトのセットアップと開始
-	@docker compose -f docker-compose.prod.yml up -d
+	@cd docker && docker compose -f docker-compose.prod.yml up -d
 
 prod-down: ## 本番環境用のプロジェクトの停止
-	@docker compose -f docker-compose.prod.yml down
+	@cd docker && docker compose -f docker-compose.prod.yml down
