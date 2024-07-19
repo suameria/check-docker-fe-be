@@ -34,9 +34,6 @@ teardown: ## Tear down the project (containers, networks, volumes)
 frontend-up: ## Set up and start the frontend
 	@echo "Setting up and starting the frontend..."
 	docker compose up -d frontend frontend-proxy
-	if [ -f ../frontend/package.json ]; then \
-	  cd ../frontend && npm run dev; \
-	fi
 
 # フロントエンドの停止
 frontend-down: ## Stop and tear down the frontend
