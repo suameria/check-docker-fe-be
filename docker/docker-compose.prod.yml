@@ -1,38 +1,35 @@
 # This is for the production environment
 services:
   frontend:
+    platform: linux/amd64
     build:
-      context: ./services/frontend
+      context: ./services/node
       dockerfile: Dockerfile
-    volumes:
-      - type: bind
-        source: ../frontend
-        target: /app
+    command: "npm start"
     environment:
       - NODE_ENV=production
     networks:
       - frontend-backend-network
 
   backend:
+    platform: linux/amd64
     build:
-      context: ./services/backend
+      context: ./services/php
       dockerfile: Dockerfile
-    volumes:
-      - type: bind
-        source: ../backend
-        target: /var/www
+    command: "php-fpm"
     environment:
       - APP_ENV=production
     networks:
       - frontend-backend-network
 
   nginx-frontend:
+    platform: linux/amd64
     image: nginx:alpine
     ports:
       - "80:80"
     volumes:
       - type: bind
-        source: ./services/nginx/nginx.frontend.prod.conf
+        source: ./nginx/nginx.frontend.prod.conf
         target: /etc/nginx/nginx.conf
     depends_on:
       - frontend
@@ -40,12 +37,13 @@ services:
       - frontend-backend-network
 
   nginx-backend:
+    platform: linux/amd64
     image: nginx:alpine
     ports:
       - "8080:80"
     volumes:
       - type: bind
-        source: ./services/nginx/nginx.backend.prod.conf
+        source: ./nginx/nginx.backend.prod.conf
         target: /etc/nginx/nginx.conf
     depends_on:
       - backend

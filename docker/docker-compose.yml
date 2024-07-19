@@ -1,38 +1,43 @@
 # This is for the local development environment
 services:
   frontend:
+    platform: linux/amd64
     build:
-      context: ./services/frontend
+      context: ./services/node
       dockerfile: Dockerfile
     volumes:
       - type: bind
         source: ../frontend
         target: /app
+    command: "npm run dev"
     environment:
       - NODE_ENV=development
     networks:
       - frontend-backend-network
 
   backend:
+    platform: linux/amd64
     build:
-      context: ./services/backend
+      context: ./services/php
       dockerfile: Dockerfile
     volumes:
       - type: bind
         source: ../backend
         target: /var/www
+    command: "php-fpm"
     environment:
       - APP_ENV=development
     networks:
       - frontend-backend-network
 
   nginx-frontend:
+    platform: linux/amd64
     image: nginx:alpine
     ports:
       - "3000:80"
     volumes:
       - type: bind
-        source: ./services/nginx/nginx.frontend.dev.conf
+        source: ./nginx/nginx.frontend.dev.conf
         target: /etc/nginx/nginx.conf
     depends_on:
       - frontend
@@ -40,12 +45,13 @@ services:
       - frontend-backend-network
 
   nginx-backend:
+    platform: linux/amd64
     image: nginx:alpine
     ports:
       - "8000:80"
     volumes:
       - type: bind
-        source: ./services/nginx/nginx.backend.dev.conf
+        source: ./nginx/nginx.backend.dev.conf
         target: /etc/nginx/nginx.conf
     depends_on:
       - backend

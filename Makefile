@@ -61,6 +61,10 @@ backend-down: ## Stop and tear down the backend
 prod-setup: ## Set up the production environment
 	@echo "Setting up production environment..."
 	cp -n docker/.env.production.example docker/.env.production || echo ".env.production already exists"
+	@echo "Installing frontend dependencies..."
+	cd frontend && npm ci --production
+	@echo "Installing backend dependencies..."
+	cd backend && composer install --no-dev --optimize-autoloader
 
 # 本番環境用のプロジェクトのセットアップと開始
 prod-up: prod-setup ## Set up and start the production environment
