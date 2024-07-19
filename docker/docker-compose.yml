@@ -12,6 +12,8 @@ services:
     command: "npm run dev"
     environment:
       - NODE_ENV=development
+    ports:
+      - "3000:3000"
     networks:
       - frontend-backend-network
 
@@ -27,6 +29,8 @@ services:
     command: "php-fpm"
     environment:
       - APP_ENV=development
+    ports:
+      - "9000:9000"
     networks:
       - frontend-backend-network
 
@@ -34,10 +38,10 @@ services:
     platform: linux/amd64
     image: nginx:alpine
     ports:
-      - "3000:80"
+      - "8080:80"
     volumes:
       - type: bind
-        source: ./nginx/nginx.frontend.dev.conf
+        source: ./services/nginx/nginx.frontend.dev.conf
         target: /etc/nginx/nginx.conf
     depends_on:
       - frontend
@@ -48,10 +52,10 @@ services:
     platform: linux/amd64
     image: nginx:alpine
     ports:
-      - "8000:80"
+      - "8081:80"
     volumes:
       - type: bind
-        source: ./nginx/nginx.backend.dev.conf
+        source: ./services/nginx/nginx.backend.dev.conf
         target: /etc/nginx/nginx.conf
     depends_on:
       - backend

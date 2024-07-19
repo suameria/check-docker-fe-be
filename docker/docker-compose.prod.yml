@@ -29,7 +29,7 @@ services:
       - "80:80"
     volumes:
       - type: bind
-        source: ./nginx/nginx.frontend.prod.conf
+        source: ./services/nginx/nginx.frontend.prod.conf
         target: /etc/nginx/nginx.conf
     depends_on:
       - frontend
@@ -43,7 +43,7 @@ services:
       - "8080:80"
     volumes:
       - type: bind
-        source: ./nginx/nginx.backend.prod.conf
+        source: ./services/nginx/nginx.backend.prod.conf
         target: /etc/nginx/nginx.conf
     depends_on:
       - backend
