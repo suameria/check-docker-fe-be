@@ -13,6 +13,12 @@ ps: ## コンテナの状態を表示
 logs: ## ログを表示
 	@docker compose logs
 
+front: ## フロントエンドコンテナに入る
+	@docker compose exec frontend /bin/sh
+
+back: ## バックエンドコンテナに入る
+	@docker compose exec backend /bin/bash
+
 # ==============================
 # Local Development Environment
 # ==============================
