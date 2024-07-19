@@ -12,6 +12,8 @@ services:
     tty: true
     environment:
       - NODE_ENV=development
+      - HOST=0.0.0.0
+      - PORT=3000
     ports:
       - "3000:3000"
     networks:
