@@ -1,4 +1,4 @@
-# This is for the development environment
+# This is for the local development environment
 services:
   frontend:
     platform: linux/amd64

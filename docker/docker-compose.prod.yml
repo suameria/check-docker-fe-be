@@ -9,7 +9,6 @@ services:
       - type: bind
         source: ../frontend
         target: /app
-    tty: true
     command: "npm start"
     environment:
       - NODE_ENV=production
