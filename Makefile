@@ -8,6 +8,7 @@ SERVICE_FRONTEND=frontend
 SERVICE_BACKEND=backend
 SERVICE_FRONTEND_PROXY=frontend-proxy
 SERVICE_BACKEND_PROXY=backend-proxy
+SERVICE_MYSQL=mysql
 ## docker command
 DOCKER_COMPOSE=docker compose
 DOCKER_COMPOSE_UP_D=$(DOCKER_COMPOSE) up -d
@@ -129,6 +130,11 @@ frontend: ## frontend コンテナに入る
 backend: ## backend コンテナに入る
 	@cd $(DIR_DOCKER) && \
 	$(DOCKER_COMPOSE_EXEC) $(SERVICE_BACKEND) bash
+
+.PHONY: mysql
+mysql: ## mysql コンテナに入る
+	@cd $(DIR_DOCKER) && \
+	$(DOCKER_COMPOSE_EXEC) $(SERVICE_MYSQL) bash
 
 
 # ============================

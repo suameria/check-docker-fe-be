@@ -1,0 +1,5 @@
+ARG MYSQL_VERSION
+FROM mysql:${MYSQL_VERSION}
+
+ARG MYSQL_VERSION
+COPY ./config/${MYSQL_VERSION}-my.cnf /etc/my.cnf

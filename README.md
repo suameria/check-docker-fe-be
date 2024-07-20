@@ -43,10 +43,10 @@ npm run dev
 
 ```
 
+## PHP-FPM
 
 ```sh
 
-## PHP-FPM
 
 - HostMachine
 
@@ -57,9 +57,11 @@ docker container run \
 --platform linux/amd64 \
 php:8.2.0-fpm
 
+```
 
 ## Nginx
 
+```sh
 - HostMachine
 
 docker container run \
@@ -125,9 +127,11 @@ docker container run \
 --network-alias nginx \
 nginx:1.23.2
 
+```
 
 ## MySQL
 
+```sh
 - HostMachine
 
 docker container run \
@@ -136,7 +140,7 @@ docker container run \
 --detach \
 --platform linux/amd64 \
 --env MYSQL_ROOT_PASSWORD=root \
-mysql:5.7.40
+mysql:9.0.0
 
 
 - HostMachine
@@ -144,6 +148,8 @@ mysql:5.7.40
 コンテナから設定ファイルをダウンロード
 docker cp db:/etc/my.cnf .
 
+ホスト側でmy.cnfを修正する
+主に文字コード
 
 - HostMachine
 
@@ -155,29 +161,28 @@ docker container run \
 --platform linux/amd64 \
 --env MYSQL_ROOT_PASSWORD=root \
 --mount type=bind,src=$(pwd)/my.cnf,dst=/etc/my.cnf \
-mysql:5.7.40
+mysql:9.0.0
 
 
 - Container
 
 文字コードがutf8mb4になっているか確認
-* character_set_systemはmysql側で常にutf8らしい
 
 mysql -u root -p
 
 mysql> show variables like "chara%";
-+--------------------------+----------------------------+
-| Variable_name            | Value                      |
-+--------------------------+----------------------------+
-| character_set_client     | utf8mb4                    |
-| character_set_connection | utf8mb4                    |
-| character_set_database   | utf8mb4                    |
-| character_set_filesystem | binary                     |
-| character_set_results    | utf8mb4                    |
-| character_set_server     | utf8mb4                    |
-| character_set_system     | utf8                       |
-| character_sets_dir       | /usr/share/mysql/charsets/ |
-+--------------------------+----------------------------+
++--------------------------+--------------------------------+
+| Variable_name            | Value                          |
++--------------------------+--------------------------------+
+| character_set_client     | utf8mb4                        |
+| character_set_connection | utf8mb4                        |
+| character_set_database   | utf8mb4                        |
+| character_set_filesystem | binary                         |
+| character_set_results    | utf8mb4                        |
+| character_set_server     | utf8mb4                        |
+| character_set_system     | utf8mb3                        |
+| character_sets_dir       | /usr/share/mysql-9.0/charsets/ |
++--------------------------+--------------------------------+
 
 
 - HostMachine
@@ -195,7 +200,7 @@ docker container run \
 --env MYSQL_ROOT_PASSWORD=root \
 --mount type=bind,src=$(pwd)/my.cnf,dst=/etc/my.cnf \
 --mount type=volume,src=db-store,dst=/var/lib/mysql \
-mysql:5.7.40
+mysql:9.0.0
 
 
 - HostMachine
@@ -215,44 +220,7 @@ docker container run \
 --mount type=volume,src=db-store,dst=/var/lib/mysql \
 --network laravel-network \
 --network-alias db \
-mysql:5.7.40
-
-
-## MailHog
-
-
-- HostMachine
-
-docker container run \
---name mail \
---rm \
---detach \
---platform linux/amd64 \
---publish 8025:8025 \
-mailhog/mailhog:v1.0.1
-
-*
-2022/12/10 08:26:46 [SMTP] Binding to address: 0.0.0.0:1025
-[HTTP] Binding to address: 0.0.0.0:8025
-2022/12/10 08:26:46 Serving under http://0.0.0.0:8025/
-
-
-- HostMachine
-
-ネットワークを作成する（既に作成済の場合は不要）
-docker network create \
-laravel-network
-
-ネットワークオプションをつける
-docker container run \
---name mail \
---rm \
---detach \
---platform linux/amd64 \
---publish 8025:8025 \
---network laravel-network \
---network-alias mail \
-mailhog/mailhog:v1.0.1
+mysql:9.0.0
 
 
 ```

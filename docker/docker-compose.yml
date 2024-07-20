@@ -73,6 +73,30 @@ services:
     networks:
       - frontend-backend-network
 
+  mysql:
+    container_name: mysql
+    platform: linux/amd64
+    build:
+      context: ./services/mysql
+      dockerfile: Dockerfile
+      args:
+        - MYSQL_VERSION=${MYSQL_VERSION}
+    volumes:
+      - type: volume
+        source: db-store
+        target: /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      # ローカルホストからアクセスするため開放
+      # [注意]ローカル開発環境のみ、本番環境ではしちゃダメ！！！
+      - 3306:3306
+    networks:
+      - frontend-backend-network
+
+volumes:
+  db-store:
+
 networks:
   frontend-backend-network:
     # ネットワーク名を明示的に設定
