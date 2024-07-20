@@ -6,7 +6,7 @@ services:
     tty: true
     build:
       context: ./services/node
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-development
       args:
         - NODE_VERSION=${NODE_VERSION}
         - FRONTEND_WORKDIR=${FRONTEND_WORKDIR}
@@ -80,7 +80,7 @@ services:
     platform: linux/amd64
     build:
       context: ./services/mysql
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-development
       args:
         - MYSQL_VERSION=${MYSQL_VERSION}
     volumes:
