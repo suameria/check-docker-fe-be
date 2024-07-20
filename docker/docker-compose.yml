@@ -9,10 +9,10 @@ services:
       dockerfile: development.Dockerfile
       args:
         - NODE_VERSION=${NODE_VERSION}
-        - FRONTEND_WORKDIR=${FRONTEND_WORKDIR}
+        - WORKDIR=${WORKDIR}
     volumes:
       - type: bind
-        source: ${FRONTEND_SRC_DIR}
+        source: ../frontend
         target: ${FRONTEND_TGT_DIR}
     environment:
       TZ: Asia/Tokyo
@@ -28,10 +28,10 @@ services:
       dockerfile: development.Dockerfile
       args:
         - PHP_VERSION=${PHP_VERSION}
-        - BACKEND_WORKDIR=${BACKEND_WORKDIR}
+        - WORKDIR=${WORKDIR}
     volumes:
       - type: bind
-        source: ${BACKEND_SRC_DIR}
+        source: ../backend
         target: ${BACKEND_TGT_DIR}
     depends_on:
       - mysql
@@ -68,6 +68,8 @@ services:
       - type: volume
         source: db-store
         target: /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
   mailhog:
     container_name: mailhog
@@ -75,6 +77,7 @@ services:
 
 volumes:
   db-store:
+    # ボリューム名を明示的に設定
     name: db-store
 
 networks:

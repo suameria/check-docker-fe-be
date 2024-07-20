@@ -33,8 +33,8 @@ build: ## ビルド
 up: ## サービス起動
 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE_UP_D)
 
-.PHONY: up-build
-up-build: ## ビルドとアップ
+.PHONY: upb
+upb: ## ビルドとアップ
 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE_UP_D) --build
 
 .PHONY: down

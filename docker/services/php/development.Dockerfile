@@ -23,5 +23,5 @@ COPY ./config/${PHP_VERSION}-php.ini-development /usr/local/etc/php/php.ini
 # Composer インストール
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-ARG BACKEND_WORKDIR
-WORKDIR ${BACKEND_WORKDIR}
+ARG WORKDIR
+WORKDIR ${WORKDIR}

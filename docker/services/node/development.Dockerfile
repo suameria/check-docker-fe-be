@@ -10,5 +10,5 @@ RUN npm install -g typescript
 
 COPY ./.bashrc /root/.bashrc
 
-ARG FRONTEND_WORKDIR
-WORKDIR ${FRONTEND_WORKDIR}
+ARG WORKDIR
+WORKDIR ${WORKDIR}
