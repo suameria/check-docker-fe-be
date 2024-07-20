@@ -2,7 +2,6 @@
 services:
   frontend:
     container_name: frontend
-    platform: linux/amd64
     tty: true
     build:
       context: ./services/node
@@ -20,14 +19,9 @@ services:
       NODE_ENV: development
       HOST: 0.0.0.0
       PORT: 3000
-    ports:
-      - ${FRONTEND_EXPOSE_HOST_PORT}:${FRONTEND_EXPOSE_CONTAINER_PORT}
-    networks:
-      - frontend-backend-network
 
   backend:
     container_name: backend
-    platform: linux/amd64
     build:
       context: ./services/php
       dockerfile: Dockerfile-development
@@ -40,44 +34,29 @@ services:
         target: ${BACKEND_TGT_DIR}
     depends_on:
       - mysql
-    ports:
-      - ${BACKEND_EXPOSE_HOST_PORT}:${BACKEND_EXPOSE_CONTAINER_PORT}
-    networks:
-      - frontend-backend-network
 
   frontend-proxy:
     container_name: frontend-proxy
-    platform: linux/amd64
     image: nginx:alpine
-    ports:
-      - "80:80"
     volumes:
       - type: bind
         source: ./services/nginx/nginx.frontend.dev.conf
         target: /etc/nginx/conf.d/default.conf
     depends_on:
       - frontend
-    networks:
-      - frontend-backend-network
 
   backend-proxy:
     container_name: backend-proxy
-    platform: linux/amd64
     image: nginx:alpine
-    ports:
-      - "8080:80"
     volumes:
       - type: bind
         source: ./services/nginx/nginx.backend.dev.conf
         target: /etc/nginx/conf.d/default.conf
     depends_on:
       - backend
-    networks:
-      - frontend-backend-network
 
   mysql:
     container_name: mysql
-    platform: linux/amd64
     build:
       context: ./services/mysql
       dockerfile: Dockerfile-development
@@ -87,21 +66,10 @@ services:
       - type: volume
         source: db-store
         target: /var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    ports:
-      - ${MYSQL_EXPOSE_HOST_PORT}:${MYSQL_EXPOSE_CONTAINER_PORT}
-    networks:
-      - frontend-backend-network
 
   mailhog:
     container_name: mailhog
-    platform: linux/amd64
     image: mailhog/mailhog:v1.0.1
-    ports:
-      - ${MAILHOG_EXPOSE_HOST_PORT}:${MAILHOG_EXPOSE_CONTAINER_PORT}
-    networks:
-      - frontend-backend-network
 
 volumes:
   db-store:

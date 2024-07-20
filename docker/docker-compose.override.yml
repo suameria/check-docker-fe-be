@@ -1,0 +1,45 @@
+# This is for the local development environment (override)
+services:
+  frontend:
+    platform: linux/amd64
+    ports:
+      - ${FRONTEND_EXPOSE_HOST_PORT}:${FRONTEND_EXPOSE_CONTAINER_PORT}
+    networks:
+      - frontend-backend-network
+
+  backend:
+    platform: linux/amd64
+    ports:
+      - ${BACKEND_EXPOSE_HOST_PORT}:${BACKEND_EXPOSE_CONTAINER_PORT}
+    networks:
+      - frontend-backend-network
+
+  frontend-proxy:
+    platform: linux/amd64
+    ports:
+      - "80:80"
+    networks:
+      - frontend-backend-network
+
+  backend-proxy:
+    platform: linux/amd64
+    ports:
+      - "8080:80"
+    networks:
+      - frontend-backend-network
+
+  mysql:
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - ${MYSQL_EXPOSE_HOST_PORT}:${MYSQL_EXPOSE_CONTAINER_PORT}
+    networks:
+      - frontend-backend-network
+
+  mailhog:
+    platform: linux/amd64
+    ports:
+      - ${MAILHOG_EXPOSE_HOST_PORT}:${MAILHOG_EXPOSE_CONTAINER_PORT}
+    networks:
+      - frontend-backend-network
