@@ -29,9 +29,17 @@ build: ## ビルド
 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) build
 # @cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) build --no-cache --force-rm
 
+.PHONY: up
+up: ## サービス起動
+	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE_UP_D)
+
 .PHONY: up-build
 up-build: ## ビルドとアップ
 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE_UP_D) --build
+
+.PHONY: down
+down: ## サービス停止
+	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) down
 
 .PHONY: ps
 ps: ## コンテナの状態を表示
@@ -95,14 +103,6 @@ npm-install: ## frontend コンテナで npm ci 実行
 	$(DOCKER_COMPOSE_EXEC) $(SERVICE_FRONTEND) npm ci
 
 # ---------- Container ----------
-
-.PHONY: up
-up: ## サービス起動
-	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE_UP_D)
-
-.PHONY: down
-down: ## サービス停止
-	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) down
 
 .PHONY: frontend-up
 frontend-up: ## frontend, frontend-proxy サービス起動

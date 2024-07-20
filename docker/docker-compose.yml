@@ -3,6 +3,7 @@ services:
   frontend:
     container_name: frontend
     tty: true
+    init: true
     build:
       context: ./services/node
       dockerfile: development.Dockerfile
@@ -57,6 +58,7 @@ services:
 
   mysql:
     container_name: mysql
+    init: true
     build:
       context: ./services/mysql
       dockerfile: development.Dockerfile
@@ -73,6 +75,7 @@ services:
 
 volumes:
   db-store:
+    name: db-store
 
 networks:
   frontend-backend-network:
