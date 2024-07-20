@@ -1,25 +1,32 @@
 # This is for the local development environment
 services:
   frontend:
+    container_name: frontend
     platform: linux/amd64
+    tty: true
     build:
       context: ./services/node
       dockerfile: Dockerfile
+      args:
+        - NODE_VERSION=${NODE_VERSION}
+        - FRONTEND_WORKDIR=${FRONTEND_WORKDIR}
     volumes:
       - type: bind
-        source: ../frontend
-        target: /app
-    tty: true
+        source: ${FRONTEND_SRC_DIR}
+        target: ${FRONTEND_TGT_DIR}
     environment:
-      - NODE_ENV=development
-      - HOST=0.0.0.0
-      - PORT=3000
+      TZ: Asia/Tokyo
+      WATCHPACK_POLLING: true
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      PORT: 3000
     ports:
-      - "3000:3000"
+      - ${FRONTEND_EXPOSE_HOST_PORT}:${FRONTEND_EXPOSE_CONTAINER_PORT}
     networks:
       - frontend-backend-network
 
   backend:
+    container_name: backend
     platform: linux/amd64
     build:
       context: ./services/php
@@ -37,6 +44,7 @@ services:
       - frontend-backend-network
 
   frontend-proxy:
+    container_name: frontend-proxy
     platform: linux/amd64
     image: nginx:alpine
     ports:
@@ -51,6 +59,7 @@ services:
       - frontend-backend-network
 
   backend-proxy:
+    container_name: backend-proxy
     platform: linux/amd64
     image: nginx:alpine
     ports:
@@ -66,4 +75,6 @@ services:
 
 networks:
   frontend-backend-network:
+    # ネットワーク名を明示的に設定
+    name: frontend-backend-network
     driver: bridge

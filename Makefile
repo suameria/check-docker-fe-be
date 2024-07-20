@@ -123,12 +123,12 @@ backend-up: ## backend, backend-proxy サービス起動
 .PHONY: frontend
 frontend: ## frontend コンテナに入る
 	@cd $(DIR_DOCKER) && \
-	$(DOCKER_COMPOSE_EXEC) $(SERVICE_FRONTEND) /bin/sh
+	$(DOCKER_COMPOSE_EXEC) $(SERVICE_FRONTEND) bash
 
 .PHONY: backend
 backend: ## backend コンテナに入る
 	@cd $(DIR_DOCKER) && \
-	$(DOCKER_COMPOSE_EXEC) $(SERVICE_BACKEND) /bin/bash
+	$(DOCKER_COMPOSE_EXEC) $(SERVICE_BACKEND) bash
 
 
 # ============================

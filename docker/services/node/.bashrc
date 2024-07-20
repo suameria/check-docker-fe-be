@@ -1,0 +1,5 @@
+alias ls='ls -FG'
+alias ll='ls -alFG'
+alias l='clear && ll'
+alias ..='cd .. ; ll'
+alias c='clear'
