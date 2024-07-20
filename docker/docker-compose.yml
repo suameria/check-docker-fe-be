@@ -5,7 +5,7 @@ services:
     tty: true
     build:
       context: ./services/node
-      dockerfile: Dockerfile-development
+      dockerfile: development.Dockerfile
       args:
         - NODE_VERSION=${NODE_VERSION}
         - FRONTEND_WORKDIR=${FRONTEND_WORKDIR}
@@ -24,7 +24,7 @@ services:
     container_name: backend
     build:
       context: ./services/php
-      dockerfile: Dockerfile-development
+      dockerfile: development.Dockerfile
       args:
         - PHP_VERSION=${PHP_VERSION}
         - BACKEND_WORKDIR=${BACKEND_WORKDIR}
@@ -59,7 +59,7 @@ services:
     container_name: mysql
     build:
       context: ./services/mysql
-      dockerfile: Dockerfile-development
+      dockerfile: development.Dockerfile
       args:
         - MYSQL_VERSION=${MYSQL_VERSION}
     volumes:
