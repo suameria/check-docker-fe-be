@@ -94,6 +94,14 @@ services:
     networks:
       - frontend-backend-network
 
+  mailhog:
+    container_name: mailhog
+    platform: linux/amd64
+    # platform: linux/x86_64
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - 8025:8025
+
 volumes:
   db-store:
 
