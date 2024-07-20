@@ -88,19 +88,18 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      # ローカルホストからアクセスするため開放
-      # [注意]ローカル開発環境のみ、本番環境ではしちゃダメ！！！
-      - 3306:3306
+      - ${MYSQL_EXPOSE_HOST_PORT}:${MYSQL_EXPOSE_CONTAINER_PORT}
     networks:
       - frontend-backend-network
 
   mailhog:
     container_name: mailhog
     platform: linux/amd64
-    # platform: linux/x86_64
     image: mailhog/mailhog:v1.0.1
     ports:
-      - 8025:8025
+      - ${MAILHOG_EXPOSE_HOST_PORT}:${MAILHOG_EXPOSE_CONTAINER_PORT}
+    networks:
+      - frontend-backend-network
 
 volumes:
   db-store:
