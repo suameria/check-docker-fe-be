@@ -1,4 +1,4 @@
-# 定数の宣言
+# Declaration of constants
 ## Directory
 DIR_DOCKER=docker
 DIR_FRONTEND=frontend
@@ -19,42 +19,42 @@ DOCKER_COMPOSE_EXEC=$(DOCKER_COMPOSE) exec
 # ==============================
 
 .PHONY: help
-help: ## コマンドヘルプ表示
+help: ## Display command help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .DEFAULT_GOAL := help
 
 .PHONY: build
-build: ## ビルド
+build: ## Build
 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) build
 # @cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) build --no-cache --force-rm
 
 .PHONY: up
-up: ## サービス起動
+up: ## Start services
 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE_UP_D)
 
 .PHONY: upb
-upb: ## ビルドとアップ
+upb: ## Build and start
 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE_UP_D) --build
 
 .PHONY: down
-down: ## サービス停止
+down: ## Stop services
 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) down
 
 .PHONY: ps
-ps: ## コンテナの状態を表示
+ps: ## Display container status
 	@cd $(DIR_DOCKER) && docker container ps --format "table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}\t{{.Names}}"
 
 .PHONY: psa
-psa: ## コンテナの状態を全表示
+psa: ## Display all container statuses
 	@cd $(DIR_DOCKER) && docker container ps -a --format "table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}\t{{.Names}}"
 
 .PHONY: logs
-logs: ## ログを表示
+logs: ## Display logs
 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) logs
 
 .PHONY: system-prune-all
-system-prune-all: ## Dockerシステム全体の不要なリソースを削除
+system-prune-all: ## Remove all unnecessary Docker resources
 	@docker system prune -a --volumes
 
 
@@ -65,7 +65,7 @@ system-prune-all: ## Dockerシステム全体の不要なリソースを削除
 # ---------- Prepare ----------
 
 .PHONY: setup
-setup: ## 環境のセットアップ
+setup: ## Setup environment
 	@mkdir -p $(DIR_BACKEND)
 	@mkdir -p $(DIR_FRONTEND)
 	@cd $(DIR_DOCKER) && cp -n .env.example .env || true
@@ -81,58 +81,58 @@ setup: ## 環境のセットアップ
 # ---------- Install ----------
 
 .PHONY: install-laravel
-install-laravel: ## backend コンテナで最新の Laravel をインストール
+install-laravel: ## Install the latest Laravel in the backend container
 	@cd $(DIR_DOCKER) && \
 	$(DOCKER_COMPOSE_EXEC) $(SERVICE_BACKEND) \
 	composer create-project --prefer-dist laravel/laravel .
 
-.PHONY: composer-laravel
-composer-install: ## backend コンテナで composer install 実行
+.PHONY: composer-install
+composer-install: ## Run composer install in the backend container
 	@cd $(DIR_DOCKER) && \
 	$(DOCKER_COMPOSE_EXEC) $(SERVICE_BACKEND) \
 	composer install
 
 .PHONY: install-next
-install-next: ## frontend コンテナで最新の Next.js をインストール
+install-next: ## Install the latest Next.js in the frontend container
 	@cd $(DIR_DOCKER) && \
 	$(DOCKER_COMPOSE_EXEC) $(SERVICE_FRONTEND) npx create-next-app@latest .
 
 .PHONY: npm-install
-npm-install: ## frontend コンテナで npm ci 実行
+npm-install: ## Run npm ci in the frontend container
 	@cd $(DIR_DOCKER) && \
 	$(DOCKER_COMPOSE_EXEC) $(SERVICE_FRONTEND) npm ci
 
 # ---------- Container ----------
 
 .PHONY: frontend-up
-frontend-up: ## frontend, frontend-proxy サービス起動
+frontend-up: ## Start frontend, frontend-proxy services
 	@cd $(DIR_DOCKER) && \
 	$(DOCKER_COMPOSE_UP_D) $(SERVICE_FRONTEND) $(SERVICE_FRONTEND_PROXY)
 
 .PHONY: frontend-npm-run-dev
-frontend-npm-run-dev: ## frontend コンテナで npm run dev 実行
+frontend-npm-run-dev: ## Run npm run dev in the frontend container
 	@cd $(DIR_DOCKER) && \
 	$(DOCKER_COMPOSE_EXEC) $(SERVICE_FRONTEND) npm run dev
 
 .PHONY: backend-up
-backend-up: ## backend, backend-proxy サービス起動
+backend-up: ## Start backend, backend-proxy services
 	@cd $(DIR_DOCKER) && \
 	$(DOCKER_COMPOSE_UP_D) $(SERVICE_BACKEND) $(SERVICE_BACKEND_PROXY)
 
 # ---------- Enter the container ----------
 
 .PHONY: frontend
-frontend: ## frontend コンテナに入る
+frontend: ## Enter the frontend container
 	@cd $(DIR_DOCKER) && \
 	$(DOCKER_COMPOSE_EXEC) $(SERVICE_FRONTEND) bash
 
 .PHONY: backend
-backend: ## backend コンテナに入る
+backend: ## Enter the backend container
 	@cd $(DIR_DOCKER) && \
 	$(DOCKER_COMPOSE_EXEC) $(SERVICE_BACKEND) bash
 
 .PHONY: mysql
-mysql: ## mysql コンテナに入る
+mysql: ## Enter the mysql container
 	@cd $(DIR_DOCKER) && \
 	$(DOCKER_COMPOSE_EXEC) $(SERVICE_MYSQL) bash
 
@@ -142,16 +142,16 @@ mysql: ## mysql コンテナに入る
 # ============================
 
 # .PHONY: prod-setup
-# prod-setup: ## 本番環境用のセットアップ
+# prod-setup: ## Setup for production environment
 # 	@cd $(DIR_DOCKER) && cp -n .env.production.example .env || true
 # 	@cd ../$(DIR_FRONTEND) && npm ci --production
 # 	@cd ../$(DIR_BACKEND) && composer install --no-dev --optimize-autoloader
 
 # .PHONY: prod-up
-# prod-up: ## 本番環境用のプロジェクトのセットアップと開始
+# prod-up: ## Setup and start the project for production environment
 # 	@make prod-setup
 # 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) -f docker-compose.prod.yml up -d
 
 # .PHONY: prod-down
-# prod-down: ## 本番環境用のプロジェクトの停止
+# prod-down: ## Stop the project for production environment
 # 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) -f docker-compose.prod.yml down
