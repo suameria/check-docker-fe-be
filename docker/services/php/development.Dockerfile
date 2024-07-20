@@ -25,3 +25,5 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 ARG WORKDIR
 WORKDIR ${WORKDIR}
+
+CMD ["php-fpm"]

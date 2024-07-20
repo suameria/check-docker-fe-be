@@ -77,6 +77,13 @@ cp -api 8.3.9-php.ini-production.org 8.3.9-php.ini-production
 
 ## Nginx
 
+```text
+設定ファイルが反映されない
+docker compose down
+docker compose up -d --build
+をすると反映される
+```
+
 ```sh
 - HostMachine
 
