@@ -1,9 +1,0 @@
-# This is for the local development environment
-services:
-  frontend:
-    ports:
-      - "3000:3000"
-
-  backend:
-    ports:
-      - "8000:8000"
