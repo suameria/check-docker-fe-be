@@ -1,4 +1,5 @@
-FROM php:8.3-fpm
+ARG PHP_VERSION
+FROM --platform=linux/amd64 php:${PHP_VERSION}-fpm
 
 RUN apt update
 
@@ -14,7 +15,13 @@ RUN docker-php-ext-install \
 RUN pecl install apcu && \
   docker-php-ext-enable apcu
 
+COPY ./.bashrc /root/.bashrc
+
+ARG PHP_VERSION
+COPY ./config/${PHP_VERSION}-php.ini-development /usr/local/etc/php/php.ini
+
 # Composer インストール
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www
+ARG BACKEND_WORKDIR
+WORKDIR ${BACKEND_WORKDIR}

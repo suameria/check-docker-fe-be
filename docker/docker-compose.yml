@@ -30,16 +30,18 @@ services:
     platform: linux/amd64
     build:
       context: ./services/php
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-development
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - BACKEND_WORKDIR=${BACKEND_WORKDIR}
     volumes:
       - type: bind
-        source: ../backend
-        target: /var/www
-    command: "php-fpm"
-    environment:
-      - APP_ENV=development
+        source: ${BACKEND_SRC_DIR}
+        target: ${BACKEND_TGT_DIR}
+    depends_on:
+      - mysql
     ports:
-      - "9000:9000"
+      - ${BACKEND_EXPOSE_HOST_PORT}:${BACKEND_EXPOSE_CONTAINER_PORT}
     networks:
       - frontend-backend-network
 

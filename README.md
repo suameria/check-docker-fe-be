@@ -55,7 +55,23 @@ docker container run \
 --rm \
 --detach \
 --platform linux/amd64 \
-php:8.2.0-fpm
+php:8.3.9-fpm
+
+コンテナから設定ファイルをダウンロード
+docker cp php:/usr/local/etc/php/php.ini-development .
+docker cp php:/usr/local/etc/php/php.ini-production .
+
+オリジナル用のファイル名に変更しておく
+mv php.ini-development 8.3.9-php.ini-development.org
+mv php.ini-production 8.3.9-php.ini-production.org
+
+コピー
+cp -api 8.3.9-php.ini-development.org 8.3.9-php.ini-development
+cp -api 8.3.9-php.ini-production.org 8.3.9-php.ini-production
+
+.orgはorgディレクトリに移動させておく
+
+
 
 ```
 
