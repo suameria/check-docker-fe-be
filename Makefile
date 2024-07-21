@@ -26,8 +26,8 @@ help: ## Display command help
 
 .PHONY: build
 build: ## Build
-	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) build
-# @cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) build --no-cache --force-rm
+# @cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) build
+	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) build --no-cache --force-rm
 
 .PHONY: up
 up: ## Start services
@@ -64,19 +64,41 @@ system-prune-all: ## Remove all unnecessary Docker resources
 
 # ---------- Prepare ----------
 
-.PHONY: setup
-setup: ## Setup environment
+.PHONY: setup-dirs
+setup-dirs: ## Create backend and frontend directories if they do not exist
 	@mkdir -p $(DIR_BACKEND)
 	@mkdir -p $(DIR_FRONTEND)
+
+.PHONY: setup-nginx-log-files
+setup-nginx-log-files: ## Create nginx log files if they do not exist
+	@# Log files to check and create if not exist
+	@LOG_FILES="backend_access.log frontend_access.log backend_error.log frontend_error.log"; \
+	for log in $$LOG_FILES; do \
+	  if [ ! -f $(DIR_DOCKER)/services/nginx/logs/$$log ]; then \
+	    touch $(DIR_DOCKER)/services/nginx/logs/$$log; \
+	  fi; \
+	done
+
+.PHONY: check-and-install
+check-and-install: ## Check for required files and run appropriate installation commands
+	@# Check if composer.json exists in backend directory and run composer-install if it does
+	@if [ -f $(DIR_BACKEND)/composer.json ]; then \
+	  make composer-install; \
+	fi
+
+	@# Check if package.json exists in frontend directory and run npm-install if it does
+	@if [ -f $(DIR_FRONTEND)/package.json ]; then \
+	  make npm-install; \
+	fi
+
+.PHONY: setup
+setup: ## Setup environment
 	@cd $(DIR_DOCKER) && cp -n .env.example .env || true
+	@make setup-dirs
+	@make setup-nginx-log-files
 	@make build
 	@make up
-	@if [ -f $(DIR_BACKEND)/composer.json ]; then \
-		make composer-install; \
-	fi
-	@if [ -f $(DIR_FRONTEND)/package.json ]; then \
-		make npm-install; \
-	fi
+	@make check-and-install
 
 # ---------- Install ----------
 

@@ -38,21 +38,35 @@ services:
 
   frontend-proxy:
     container_name: frontend-proxy
-    image: nginx:alpine
+    build:
+      context: ./services/nginx
+      dockerfile: development.Dockerfile
+      args:
+        - NGINX_VERSION=${NGINX_VERSION}
     volumes:
       - type: bind
-        source: ./services/nginx/nginx.frontend.dev.conf
+        source: ./services/nginx/config/conf.d/development/frontend.conf
         target: /etc/nginx/conf.d/default.conf
+      - type: bind
+        source: ./services/nginx/logs
+        target: ${NGINX_LOG_TGT_DIR}
     depends_on:
       - frontend
 
   backend-proxy:
     container_name: backend-proxy
-    image: nginx:alpine
+    build:
+      context: ./services/nginx
+      dockerfile: development.Dockerfile
+      args:
+        - NGINX_VERSION=${NGINX_VERSION}
     volumes:
       - type: bind
-        source: ./services/nginx/nginx.backend.dev.conf
+        source: ./services/nginx/config/conf.d/development/backend.conf
         target: /etc/nginx/conf.d/default.conf
+      - type: bind
+        source: ./services/nginx/logs
+        target: ${NGINX_LOG_TGT_DIR}
     depends_on:
       - backend
 

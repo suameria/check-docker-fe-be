@@ -1,5 +1,5 @@
 ARG PHP_VERSION
-FROM --platform=linux/amd64 php:${PHP_VERSION}-fpm
+FROM php:${PHP_VERSION}-fpm
 
 RUN apt update
 

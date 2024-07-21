@@ -1,2 +1,2 @@
 .env
-nginx/logs/*.log
+docker/services/nginx/logs/*.log
