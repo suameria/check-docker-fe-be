@@ -26,8 +26,8 @@ help: ## Display command help
 
 .PHONY: build
 build: ## Build
-# @cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) build
-	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) build --no-cache --force-rm
+	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) build
+# @cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) build --no-cache --force-rm
 
 .PHONY: up
 up: ## Start services
