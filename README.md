@@ -8,6 +8,17 @@
 海外の大企業でもモノレポにしているらしい
 ```
 
+## 使い方
+
+```
+このリポジトリの
+- dockerディレクトリ
+- Makefile
+- .gitignore
+を取り込みたいプロジェクトにコピー
+あとはMakefileを参考にすればすぐに環境が構築できるように構成している
+```
+
 ## Docker Hub
 
 - [Docker Hub 公式](https://hub.docker.com/)
