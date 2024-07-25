@@ -69,6 +69,16 @@ setup-dirs: ## Create backend and frontend directories if they do not exist
 	@mkdir -p $(DIR_BACKEND)
 	@mkdir -p $(DIR_FRONTEND)
 
+.PHONY: setup-docker-compose-files
+setup-docker-compose-files: ## Create docker-compose files if they do not exist
+	@# docker compose files to check and create if not exist
+	@DOCKER_COMPOSE_FILES="docker-compose.yml docker-compose.override.yml"; \
+	for docker_compose_file in $$DOCKER_COMPOSE_FILES; do \
+	  if [ ! -f $(DIR_DOCKER)/$$docker_compose_file ]; then \
+	    cp -api $(DIR_DOCKER)/example.$$docker_compose_file $(DIR_DOCKER)/$$docker_compose_file; \
+	  fi; \
+	done
+
 .PHONY: setup-nginx-log-files
 setup-nginx-log-files: ## Create nginx log files if they do not exist
 	@# Log files to check and create if not exist

@@ -1,2 +1,4 @@
 .env
-docker/services/nginx/logs/*.log
+*_access.log
+*_error.log
+!example.*.yml
