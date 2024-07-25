@@ -31,14 +31,17 @@ build: ## Build
 
 .PHONY: up
 up: ## Start services
+	@make setup-docker-compose-files
 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE_UP_D)
 
 .PHONY: upb
 upb: ## Build and start
+	@make setup-docker-compose-files
 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE_UP_D) --build
 
 .PHONY: down
 down: ## Stop services
+	@make setup-docker-compose-files
 	@cd $(DIR_DOCKER) && $(DOCKER_COMPOSE) down
 
 .PHONY: ps
@@ -105,6 +108,7 @@ check-and-install: ## Check for required files and run appropriate installation 
 setup: ## Setup environment
 	@cd $(DIR_DOCKER) && cp -n .env.example .env || true
 	@make setup-dirs
+	@make setup-docker-compose-files
 	@make setup-nginx-log-files
 	@make build
 	@make up

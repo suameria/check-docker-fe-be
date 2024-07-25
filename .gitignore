@@ -1,4 +1,5 @@
 .env
 *_access.log
 *_error.log
-!example.*.yml
+docker-compose.yml
+docker-compose.override.yml
