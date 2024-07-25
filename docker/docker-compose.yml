@@ -20,6 +20,8 @@ services:
       NODE_ENV: development
       HOST: 0.0.0.0
       PORT: 3000
+    networks:
+      - frontend-backend-network
 
   backend:
     container_name: backend
@@ -35,6 +37,8 @@ services:
         target: ${BACKEND_TGT_DIR}
     depends_on:
       - mysql
+    networks:
+      - frontend-backend-network
 
   frontend-proxy:
     container_name: frontend-proxy
@@ -52,6 +56,8 @@ services:
         target: ${NGINX_LOG_TGT_DIR}
     depends_on:
       - frontend
+    networks:
+      - frontend-backend-network
 
   backend-proxy:
     container_name: backend-proxy
@@ -69,6 +75,8 @@ services:
         target: ${NGINX_LOG_TGT_DIR}
     depends_on:
       - backend
+    networks:
+      - frontend-backend-network
 
   mysql:
     container_name: mysql
@@ -80,19 +88,23 @@ services:
         - MYSQL_VERSION=${MYSQL_VERSION}
     volumes:
       - type: volume
-        source: db-store
+        source: mysql-volume
         target: /var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - frontend-backend-network
 
   mailhog:
     container_name: mailhog
     image: mailhog/mailhog:v1.0.1
+    networks:
+      - frontend-backend-network
 
 volumes:
-  db-store:
+  mysql-volume:
     # ボリューム名を明示的に設定
-    name: db-store
+    name: mysql-volume
 
 networks:
   frontend-backend-network:

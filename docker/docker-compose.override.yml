@@ -4,40 +4,28 @@ services:
     platform: linux/amd64
     ports:
       - 3000:3000
-    networks:
-      - frontend-backend-network
 
   backend:
     platform: linux/amd64
     ports:
       - 9000:9000
-    networks:
-      - frontend-backend-network
 
   frontend-proxy:
     platform: linux/amd64
     ports:
       - 80:80
-    networks:
-      - frontend-backend-network
 
   backend-proxy:
     platform: linux/amd64
     ports:
       - 8080:80
-    networks:
-      - frontend-backend-network
 
   mysql:
     platform: linux/amd64
     ports:
       - 3306:3306
-    networks:
-      - frontend-backend-network
 
   mailhog:
     platform: linux/amd64
     ports:
       - 8025:8025
-    networks:
-      - frontend-backend-network
