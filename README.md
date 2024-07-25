@@ -1,5 +1,17 @@
 # check-docker-frontend-backend
 
+- [モノリシックなバージョン管理の利点](https://postd.cc/monorepo/)
+- [20億行のコードを保存し、毎日4万5000回のコミットを発行しているGoogleが、単一のリポジトリで全社のソースコードを管理している理由](https://www.publickey1.jp/blog/15/2045000google.html)
+
+```text
+プロジェクトが1つでも、フロントエンドとバックエンドでリポジトリを分けず、モノリポジトリを採用する
+海外の大企業でもモノレポにしているらしい
+```
+
+## Docker Hub
+
+- [Docker Hub 公式](https://hub.docker.com/)
+
 ```text
 ポート公開、ファイル等のバインドマウント
 バインドマウントでホスト側の場合
@@ -9,10 +21,6 @@ ls -al $(pwd)/../..
 
 コマンドからDockerfile、docker-compose.ymlを作成していく
 ```
-
-## Docker Hub
-
-- [Docker Hub 公式](https://hub.docker.com/)
 
 ## Node.js
 
