@@ -25,6 +25,18 @@ makeすればhelpが出力されるようになっているし、
 make setup
 ```
 
+- なんかコンテナに入れないんだけど、、、
+
+```text
+make ps もしくは docker ps で、きちんとコンテナが立ち上がっているのに、
+make backend もしくは dockerディレクトリに移動して docker compose exec backend bash したら、下記エラーが出る
+
+OCI runtime exec failed: exec failed: unable to start container process: current working directory is outside of container mount namespace root -- possible container breakout detected: unknown
+
+原因は不明だが、コンテナをリスタートするか(docker restart backend)
+make down -> make up すると直る、、、謎！
+```
+
 ## make コマンドと Makefile について
 
 - make コマンド
