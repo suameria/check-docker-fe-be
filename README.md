@@ -1,4 +1,4 @@
-# check-docker-frontend-backend
+# check-docker-fe-be
 
 - [モノリシックなバージョン管理の利点](https://postd.cc/monorepo/)
 - [20億行のコードを保存し、毎日4万5000回のコミットを発行しているGoogleが、単一のリポジトリで全社のソースコードを管理している理由](https://www.publickey1.jp/blog/15/2045000google.html)
@@ -10,7 +10,7 @@
 
 ## 使い方
 
-```
+```text
 このリポジトリの
 - dockerディレクトリ
 - Makefile
@@ -23,6 +23,23 @@ makeすればhelpが出力されるようになっているし、
 
 ```sh
 make setup
+```
+
+## make コマンドと Makefile について
+
+- make コマンド
+
+```text
+Makefile に定義されたルールに基づいて、プログラムのビルドやその他のタスクを自動化するツール
+主にソフトウェアのビルドプロセスを管理するために使われるが、一般的なタスクの自動化にも利用できる
+```
+
+- Makefile
+
+```text
+プログラムのビルドや管理を自動化するためのファイル
+make コマンドを使用する前提
+ビルド自動化、タスクの自動化(テストの実行やファイルのコピー、クリーンアップ等)、依存関係の管理
 ```
 
 ## Docker Hub
